@@ -12,12 +12,8 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMessageBox
 
 import sqlite3 
-conn = sqlite3.connect('sample.db')
+conn= sqlite3.connect('BankNH.db')
 cur = conn.cursor()
-cur.execute('''CREATE TABLE  if not exists "user" ("name" TEXT NOT NULL, "password" TEXT NOT NULL)''')
-cur.execute(''' insert into user values("abc","123")''')
-cur.execute(''' insert into user values("xyz","456")''')
-conn.commit()
 
 class Ui_login_page(object):
     def setupUi(self, login_page):
@@ -118,14 +114,14 @@ class Ui_login_page(object):
         self.signin_Button.setObjectName("signin_Button")
         self.label = QtWidgets.QLabel(self.groupBox)
         self.label.setGeometry(QtCore.QRect(240, 250, 91, 81))
-        self.label.setStyleSheet("background-image: url(:/img1/username_img.png);")
+        self.label.setStyleSheet("background-image: url(:/Project/username_img.png);")
         self.label.setText("")
         self.label.setPixmap(QtGui.QPixmap("username_img.png"))
         self.label.setScaledContents(True)
         self.label.setObjectName("label")
         self.label_5 = QtWidgets.QLabel(self.groupBox)
         self.label_5.setGeometry(QtCore.QRect(240, 370, 91, 91))
-        self.label_5.setStyleSheet("background-image: url(:/img2/password_img.png);")
+        self.label_5.setStyleSheet("background-image: url(:/Project/password_img.png);")
         self.label_5.setText("")
         self.label_5.setPixmap(QtGui.QPixmap("password_img.png"))
         self.label_5.setScaledContents(True)
@@ -146,23 +142,25 @@ class Ui_login_page(object):
         
     def loginLogin(self):
         import sqlite3
-        dbb = sqlite3.connect('sample.db')
-        cur = dbb.cursor()
+        conn = sqlite3.connect('BankNH.db')
+        cur = conn.cursor()
         uname = self.name.text()
         upassword = self.password.text()
 
         x=[]
         x.append(uname)
-        cur.execute("SELECT password FROM user WHERE name = ? ", x)
+        cur.execute("SELECT password FROM newbank WHERE username = ? ", x)
         result = cur.fetchall()
         b=[]
         for i in result:
                 b.append(i[0])
+        print(b)        
 
-        if upassword in b:
+        if upassword in str(b):
                 self.generalmsg('successful','logined successfully')
                  #self.profile()
         else:
+                print(upassword)
                 self.generalmsg('warning ','incorect details')
               
     def retranslateUi(self, login_page):
